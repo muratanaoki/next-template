@@ -308,6 +308,14 @@ export function useDebounce<T>(value: T, delay: number): T {
 | 命名         | ドメイン用語を含む           | 汎用的な名前               |
 | 例           | `formatUserName`, `UserRole` | `formatDate`, `HttpMethod` |
 
+#### 中規模でシンプルに保つ場合の推奨構成
+
+- `app/` はルーティングとページ枠組みに専念し、`page.tsx`・`layout.tsx`・`loading.tsx` など Next.js が特別扱いするファイルのみを置く。
+- 実際の UI・ビジネスロジックは `features/<domain>/` 以下にまとめ、コンポーネント・hooks・サービス・型・定数をドメイン単位で完結させる。
+- ドメインに依存しない汎用コンポーネントやユーティリティは `shared/` に集約し、`features` → `shared` の一方向依存を維持する。
+- プロジェクトが成長した際は、まず `features` 内で粒度を細かくする（`components`, `services`, `hooks` などの整理）ところから着手し、階層を必要に応じて追加する。
+- この 3 レイヤー構成をベースラインにすると、中規模でも過度に複雑化せず、後からの拡張にも備えやすい。
+
 **使用例**
 
 ```typescript
