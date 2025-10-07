@@ -1,31 +1,45 @@
+// プロジェクト全体で整ったコードスタイルと自動補正を適用するための VS Code 設定です。
 {
+  // 保存時に自動フォーマットを実行し、コミット前にスタイル差分が出ないようにします。
   "editor.formatOnSave": true,
+  // 保存時に実行するコードアクションを明示的に指定します。
   "editor.codeActionsOnSave": {
+    // 保存時に ESLint の auto-fix を明示的に要求し、不要な変換を防ぎます。
     "source.fixAll.eslint": "explicit",
+    // 保存時に Stylelint の auto-fix を明示的に要求し、スタイル関連の問題を解消します。
     "source.fixAll.stylelint": "explicit"
   },
+  // TypeScript の import で相対パスを使い、VS Code の補完とプロジェクト構造の整合性を保ちます。
   "typescript.preferences.importModuleSpecifier": "relative",
+  // TypeScript ファイルのデフォルトフォーマッタを Prettier に指定します。
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  // TSX/JSX を含む TypeScript React ファイルでも Prettier を利用します。
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  // JavaScript ファイルも Prettier で統一します。
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  // JSX を含む JavaScript React ファイルのフォーマッタにも Prettier を利用します。
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  // JSON のフォーマットを Prettier に合わせ、設定ファイルの整合性を保ちます。
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  // CSS のフォーマットも Prettier で統一します。
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  // SCSS/Sass ファイルを Prettier でフォーマットし、スタイルの一貫性を確保します。
   "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  // Emmet の展開対象に TypeScript React を含め、HTML と同様のスニペットを利用できるようにします。
   "emmet.includeLanguages": {
     "typescriptreact": "html"
   }

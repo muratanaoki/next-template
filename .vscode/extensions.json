@@ -1,11 +1,14 @@
+// 推奨 VS Code 拡張機能を列挙して、プロジェクトで共通の開発体験を保つための設定です。
 {
+  // 推奨リストに含めることで、メンバーがワークスペースに入った際にインストールを促せます。
   "recommendations": [
+    // Prettier による共通フォーマットを適用する拡張機能。
     "esbenp.prettier-vscode",
+    // ESLint の問題をエディタ上で検出し、自動修正を有効にする拡張機能。
     "dbaeumer.vscode-eslint",
+    // Stylelint を利用した CSS/SCSS/PostCSS の静的解析を提供する拡張機能。
     "stylelint.vscode-stylelint",
-    "ms-vscode.vscode-typescript-next",
-    "formulahendry.auto-rename-tag",
-    "christian-kohler.path-intellisense",
-    "ms-vscode.vscode-json"
+    // 最新の TypeScript 機能を VS Code 上で先行利用できる内部拡張機能。
+    "ms-vscode.vscode-typescript-next"
   ]
 }

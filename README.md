@@ -351,6 +351,13 @@ export function UserList({ users }: Props) {
 | enum                 | パスカルケース（単数形） | `UserRole`, `OrderStatus`               |
 | enum メンバー        | パスカルケース           | `UserRole.Admin`, `OrderStatus.Pending` |
 
+#### CSS Modules のクラス命名
+
+- CSS Modules のクラス名は原則として **キャメルケース** を使用する。
+- ハイフン区切りのクラス名は使用しない。既存の資産から移行する場合は `primaryLink` のような形にリネームする。
+- JavaScript/TypeScript 側では `styles.primaryLink` のようにドット記法で参照する。
+- 条件付きクラス結合が必要な場合のみ `clsx` を利用し、単一クラスの指定には用いない。
+
 ### 3. TypeScript 規約
 
 #### 型定義の原則
