@@ -139,28 +139,6 @@
 }
 
 /* ===============================================
-   ダークテーマ対応
-   =============================================== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Surface colors (Dark) */
-    --color-surface-base: var(--palette-neutral-900);
-    --color-surface-elevated: var(--palette-neutral-800);
-    --color-surface-subtle: var(--palette-neutral-700);
-
-    /* Text colors (Dark) */
-    --color-text-primary: var(--palette-neutral-050);
-    --color-text-secondary: var(--palette-neutral-200);
-    --color-text-tertiary: var(--palette-neutral-400);
-    --color-text-muted: var(--palette-neutral-500);
-
-    /* Border colors (Dark) */
-    --color-border-default: var(--palette-neutral-700);
-    --color-border-strong: var(--palette-neutral-600);
-  }
-}
-
-/* ===============================================
    ベーススタイル
    =============================================== */
 
