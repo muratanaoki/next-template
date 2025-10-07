@@ -31,17 +31,17 @@ const mockUsers: User[] = [
 export const userService = {
   async findAll(): Promise<User[]> {
     // 実際のAPIコールをシミュレート
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     return mockUsers;
   },
 
   async findById(id: string): Promise<User | null> {
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return mockUsers.find(user => user.id === id) || null;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    return mockUsers.find((user) => user.id === id) || null;
   },
 
   async create(userData: Omit<User, "id" | "createdAt">): Promise<User> {
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     const newUser: User = {
       id: String(mockUsers.length + 1),
       ...userData,
