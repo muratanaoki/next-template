@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EnvironmentBanner } from "@/shared/components/layout/EnvironmentBanner";
+import "./normalize.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
