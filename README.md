@@ -1,15 +1,36 @@
 # Next.js×Go コーディング規約 v1.2
 
-## 📋 目次
-
-1. [概要](#概要)
-2. [フロントエンド（Next.js）](#フロントエンドnextjs)
+Next.js と Go を組み合わせたアプリケーションで一貫した品質と開発体験を保つためのフロントエンド規約です。App Router を前提に、ディレクトリ構成・型安全性・環境切り替え・コンポーネント設計までをカバーします。
 
 ---
 
-## フロントエンド（Next.js）
+## 概要
 
-### 1. ディレクトリ構成
+- ルーティングと UI/ビジネスロジックを明確にレイヤリングし、保守性を高める。
+- 型安全なデータ定義と環境変数管理で、実装・運用時の事故を防ぐ。
+- チーム全体で共通のフォーマッタ／リンタ／エディタ設定を共有する。
+
+## 目次
+
+1. [アーキテクチャ方針](#アーキテクチャ方針)
+   - [ディレクトリ構成](#ディレクトリ構成)
+   - [レイヤーの役割](#レイヤーの役割)
+   - [features vs shared の判断基準](#features-vs-shared-の判断基準)
+   - [中規模プロジェクトの推奨アプローチ](#中規模プロジェクトの推奨アプローチ)
+2. [開発ガイドライン](#開発ガイドライン)
+   - [命名規約](#命名規約)
+   - [CSS Modules のクラス命名](#css-modules-のクラス命名)
+   - [TypeScript 規約](#typescript-規約)
+3. [環境変数とビルド](#環境変数とビルド)
+4. [コンポーネント設計](#コンポーネント設計)
+5. [VS Code セットアップ](#vs-code-セットアップ)
+6. [更新履歴](#更新履歴)
+
+---
+
+## アーキテクチャ方針
+
+### ディレクトリ構成
 
 ```
 /
@@ -90,89 +111,28 @@
       └─ handlers.ts
 ```
 
-#### `app/` vs `features/` の使い分け
+### レイヤーの役割
 
-**`app/` ディレクトリ**
-
-- Next.js の**ルーティング専用**
-- 特別な意味を持つファイルのみ配置
-- 配置すべきファイル：
-  - `page.tsx` - ページエントリーポイント
-  - `layout.tsx` - レイアウト定義
-  - `loading.tsx` - ローディング状態
-  - `error.tsx` - エラー境界
-  - `not-found.tsx` - 404 ページ
-  - `route.ts` - API Routes
-  - `globals.css` - グローバルスタイル
-
-**`features/` ディレクトリ**
-
-- **実際の UI コンポーネントとビジネスロジック**を配置
-- ドメイン知識を含む機能実装
-- 再利用可能なコンポーネント群
-- 各機能ごとの構成：
-  - `components/` - UI コンポーネント
-  - `hooks/` - カスタムフック
-  - `services/` - API 呼び出しロジック
-  - `functions/` - ドメイン固有のユーティリティ関数
-  - `enums.ts` - 列挙型定義
-  - `interfaces.ts` - インターフェース定義
-  - `types.ts` - 型エイリアス定義
-  - `constants.ts` - 定数定義
-  - `index.ts` - 外部公開用エクスポート
-
-**ファイル分割の例**
+- `app/`: ルーティングとページ骨格を担うレイヤー。Next.js が特別扱いするファイルのみを置き、UI やドメインロジックは持ち込まない。
+- `features/`: ドメイン固有の UI・hooks・サービス・型・定数をひとまとめに管理し、エクスポートを `index.ts` で制御する。
+- `shared/`: ドメインに依存しない汎用モジュール。`features` から参照するが、逆方向の依存は作らない。
 
 ```typescript
-// features/users/enums.ts
-export const UserRole = {
-  Admin: "ADMIN",
-  User: "USER",
-  Guest: "GUEST",
-} as const;
+// app/(dashboard)/users/page.tsx
+import { UserList } from "@/features/users/components/UserList";
+import { userService } from "@/features/users";
 
-export const UserStatus = {
-  Active: "ACTIVE",
-  Inactive: "INACTIVE",
-  Suspended: "SUSPENDED",
-} as const;
-```
-
-```typescript
-// features/users/interfaces.ts
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  status: UserStatus;
-  createdAt: Date;
+export default async function UsersPage() {
+  const users = await userService.fetchUsers();
+  return <UserList users={users} />;
 }
-
-export interface UserRepository {
-  findById(id: string): Promise<User | null>;
-  findAll(): Promise<User[]>;
-}
-```
-
-```typescript
-// features/users/types.ts
-export type UserRole = (typeof UserRole)[keyof typeof UserRole];
-export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
-export type UserId = string;
-export type UserEmail = string;
-```
-
-```typescript
-// features/users/constants.ts
-export const DEFAULT_PAGE_SIZE = 20;
-export const MAX_USERNAME_LENGTH = 50;
-export const MIN_PASSWORD_LENGTH = 8;
-export const USER_CACHE_TTL = 300; // 5分
 ```
 
 ```typescript
 // features/users/functions/formatUserName.ts
+import type { User } from "../interfaces";
+import { UserRole } from "../enums";
+
 export function formatUserName(user: User): string {
   return `${user.name} (${user.email})`;
 }
@@ -183,123 +143,17 @@ export function isAdminUser(user: User): boolean {
 ```
 
 ```typescript
-// features/users/index.ts
-// 外部に公開するものだけエクスポート
-export { UserCard, UserList } from "./components";
-export { useUserQuery, useUserMutation } from "./hooks";
-export { userService } from "./services";
-export type { User, UserRepository } from "./interfaces";
-export { UserRole, UserStatus } from "./enums";
-export { formatUserName, isAdminUser } from "./functions";
-```
-
-**`shared/` ディレクトリ**
-
-- **ドメイン知識を持たない共通モジュール**
-- アプリケーション全体で再利用される汎用的なコード
-- 各ファイルの役割：
-  - `components/ui/` - ボタン、入力欄などの汎用 UI コンポーネント
-  - `components/layout/` - ヘッダー、フッターなどのレイアウト部品
-  - `libs/` - HTTP クライアント、ロガーなどのライブラリ
-  - `utils/` - 日付フォーマット、文字列操作などの汎用関数
-  - `hooks/` - useDebounce、useLocalStorage などの共通フック
-  - `styles/` - CSS 変数、テーマ定義
-  - `config/` - アプリケーション設定
-  - `enums.ts` - アプリ全体で使う列挙型
-  - `interfaces.ts` - アプリ全体で使うインターフェース
-  - `types.ts` - アプリ全体で使う型定義
-  - `constants.ts` - アプリ全体で使う定数
-
-**ファイル分割の例**
-
-```typescript
-// shared/enums.ts
-export const HttpMethod = {
-  Get: "GET",
-  Post: "POST",
-  Put: "PUT",
-  Delete: "DELETE",
-} as const;
-
-export const Theme = {
-  Light: "light",
-  Dark: "dark",
-  System: "system",
-} as const;
-```
-
-```typescript
-// shared/interfaces.ts
-export interface ApiResponse<T> {
-  data: T;
-  message: string;
-  status: number;
-}
-
-export interface PaginationParams {
-  page: number;
-  pageSize: number;
-}
-
-export interface PaginatedResponse<T> {
-  items: T[];
-  total: number;
-  page: number;
-  pageSize: number;
-}
-```
-
-```typescript
-// shared/types.ts
-export type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
-export type Theme = (typeof Theme)[keyof typeof Theme];
-export type Nullable<T> = T | null;
-export type Optional<T> = T | undefined;
-export type ID = string | number;
-```
-
-```typescript
-// shared/constants.ts
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
-export const API_TIMEOUT = 30000; // 30秒
-export const DEFAULT_LOCALE = "ja";
-export const DATE_FORMAT = "YYYY-MM-DD";
-export const DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss";
-```
-
-```typescript
 // shared/utils/formatDate.ts
 import { format } from "date-fns";
 import { DATE_FORMAT } from "../constants";
 
 export function formatDate(date: Date | string): string {
-  const d = typeof date === "string" ? new Date(date) : date;
-  return format(d, DATE_FORMAT);
+  const target = typeof date === "string" ? new Date(date) : date;
+  return format(target, DATE_FORMAT);
 }
 ```
 
-```typescript
-// shared/hooks/useDebounce.ts
-import { useEffect, useState } from "react";
-
-export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState<T>(value);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
-}
-```
-
-**features vs shared の判断基準**
+### features vs shared の判断基準
 
 | 基準         | features                     | shared                     |
 | ------------ | ---------------------------- | -------------------------- |
@@ -308,65 +162,65 @@ export function useDebounce<T>(value: T, delay: number): T {
 | 命名         | ドメイン用語を含む           | 汎用的な名前               |
 | 例           | `formatUserName`, `UserRole` | `formatDate`, `HttpMethod` |
 
-#### 中規模でシンプルに保つ場合の推奨構成
+### 中規模プロジェクトの推奨アプローチ
 
-- `app/` はルーティングとページ枠組みに専念し、`page.tsx`・`layout.tsx`・`loading.tsx` など Next.js が特別扱いするファイルのみを置く。
-- 実際の UI・ビジネスロジックは `features/<domain>/` 以下にまとめ、コンポーネント・hooks・サービス・型・定数をドメイン単位で完結させる。
-- ドメインに依存しない汎用コンポーネントやユーティリティは `shared/` に集約し、`features` → `shared` の一方向依存を維持する。
-- プロジェクトが成長した際は、まず `features` 内で粒度を細かくする（`components`, `services`, `hooks` などの整理）ところから着手し、階層を必要に応じて追加する。
-- この 3 レイヤー構成をベースラインにすると、中規模でも過度に複雑化せず、後からの拡張にも備えやすい。
-
-**使用例**
+- `app/` はルーティングとページ枠組みに専念し、`page.tsx`・`layout.tsx`・`loading.tsx` などの特別ファイルのみを管理する。
+- UI・ビジネスロジックはドメイン単位で `features/<domain>/` にまとめ、依存する型・定数・hooks・サービスを閉じ込める。
+- 汎用コンポーネントやユーティリティは `shared/` に寄せ、`features` → `shared` の一方向依存を守る。
+- スケールに応じて `features` 内の階層（`components`, `services`, `hooks` など）を増やし、レイヤー構造自体は維持する。
+- この 3 レイヤー構成をベースラインとし、必要になったタイミングで `entities` や `widgets` など追加の粒度を検討する。
 
 ```typescript
 // ✅ app/(dashboard)/users/page.tsx
-// ルーティングとデータ取得のみ
-import { UserList } from "@/features/users/components/UserList";
+import { UsersPage } from "@/features/users";
 
-export default async function UsersPage() {
-  const users = await fetchUsers();
-  return <UserList users={users} />;
+export default function UsersRoute() {
+  return <UsersPage />;
 }
 ```
 
 ```typescript
 // ✅ features/users/components/UserList.tsx
-// 実際のUIロジック
 "use client";
+
+import { useState } from "react";
+import type { User } from "../interfaces";
+
+interface Props {
+  users: User[];
+}
 
 export function UserList({ users }: Props) {
   const [filter, setFilter] = useState("");
-  // コンポーネントロジック
-  return <div>{/* UI実装 */}</div>;
+  // コンポーネント固有ロジック
+  return <div>{/* UI 実装 */}</div>;
 }
 ```
 
-```typescript
-// ❌ 避けるべき - app内にコンポーネントを配置
-// app/(dashboard)/users/UserList.tsx
-```
+---
 
-### 2. 命名規約
+## 開発ガイドライン
+
+### 命名規約
 
 | 種別                 | 記法                     | 例                                      |
 | -------------------- | ------------------------ | --------------------------------------- |
 | フォルダ             | ケバブケース             | `user-profile`, `learning-content`      |
 | React コンポーネント | パスカルケース           | `UserCard.tsx`, `LoginForm.tsx`         |
-| 関数・変数           | キャメルケース           | `fetchUsers.ts`, `getUserById`          |
+| 関数・変数           | キャメルケース           | `fetchUsers`, `getUserById`             |
 | 定数                 | スクリーミングスネーク   | `DEFAULT_PAGE_SIZE`, `MAX_RETRY_COUNT`  |
 | テストファイル       | `*.test.ts(x)`           | `userService.test.ts`                   |
 | 型定義               | パスカルケース + 接尾辞  | `UserType`, `ApiResponse`               |
 | enum                 | パスカルケース（単数形） | `UserRole`, `OrderStatus`               |
 | enum メンバー        | パスカルケース           | `UserRole.Admin`, `OrderStatus.Pending` |
 
-#### CSS Modules のクラス命名
+### CSS Modules のクラス命名
 
-- CSS Modules のクラス名は原則として **キャメルケース** を使用する。
-- ハイフン区切りのクラス名は使用しない。既存の資産から移行する場合は `primaryLink` のような形にリネームする。
-- JavaScript/TypeScript 側では `styles.primaryLink` のようにドット記法で参照する。
-- 条件付きクラス結合が必要な場合のみ `clsx` を利用し、単一クラスの指定には用いない。
+- クラス名はキャメルケースを基本とし、ハイフン区切りは使用しない。
+- コンポーネント側では `styles.primaryLink` のようにドット記法で参照する。
+- 条件付きクラス結合が必要な場合のみ `clsx` を利用し、単一クラス指定では使用しない。
 
-### 3. TypeScript 規約
+### TypeScript 規約
 
 #### 型定義の原則
 
@@ -393,7 +247,7 @@ export type { User };
 #### enum の定義
 
 ```typescript
-// ✅ 推奨: const enumまたはas constを使用
+// ✅ 推奨: as const を利用したリテラル型
 export const UserRole = {
   Admin: "ADMIN",
   User: "USER",
@@ -402,14 +256,13 @@ export const UserRole = {
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
-// 使用例
 function checkRole(role: UserRole) {
   if (role === UserRole.Admin) {
     // 管理者処理
   }
 }
 
-// ✅ 別の方法: TypeScript enum（数値enumは避ける）
+// ✅ 代替: 文字列 enum（数値 enum は避ける）
 export enum OrderStatus {
   Pending = "PENDING",
   Processing = "PROCESSING",
@@ -417,7 +270,7 @@ export enum OrderStatus {
   Cancelled = "CANCELLED",
 }
 
-// ❌ 避けるべき: 数値enum
+// ❌ 避けるべき: 数値 enum
 enum BadExample {
   First, // 0
   Second, // 1
@@ -425,7 +278,13 @@ enum BadExample {
 }
 ```
 
-#### 環境変数の型安全な管理
+---
+
+## 環境変数とビルド
+
+環境差異を吸収しつつ型安全に扱うため、必ずスキーマ定義を通して読み込む。
+
+### 型安全な環境変数ロード
 
 ```typescript
 // src/env/index.ts
@@ -448,59 +307,72 @@ export const env = envSchema.parse({
 });
 ```
 
-#### 環境別ビルド
+### ビルド・プレビューコマンド
 
 ```bash
 # 開発環境
-npm run dev                    # 開発サーバー起動
-npm run build                  # 開発環境設定でビルド
+npm run dev
+npm run build
 
 # ステージング環境
-npm run dev:staging           # ステージング用開発サーバー
-npm run build:staging         # ステージング環境設定でビルド
-npm run preview:staging       # ステージング環境プレビュー
+npm run dev:staging
+npm run build:staging
+npm run preview:staging
 
 # 本番環境
-npm run build:production      # 本番環境設定でビルド
-npm run preview:production    # 本番環境プレビュー
+npm run build:production
+npm run preview:production
 ```
 
-**環境ファイル構成**
+### 環境ファイルの配置
 
-- `env/.env.development` - 開発環境用設定
-- `env/.env.staging` - ステージング環境用設定
-- `env/.env.production` - 本番環境用設定
-- `env/.env.example` - 環境変数テンプレート
-- `.env.local` - 現在の環境変数（Git管理外、自動生成）
-
-**環境切り替えコマンド**
+- `env/.env.development` — 開発環境用設定
+- `env/.env.staging` — ステージング環境用設定
+- `env/.env.production` — 本番環境用設定
+- `env/.env.example` — 環境変数テンプレート
+- `.env.local` — 現在の環境変数（Git 管理外、自動生成）
 
 ```bash
-npm run env:dev      # 開発環境に切り替え
-npm run env:staging  # ステージング環境に切り替え
-npm run env:prod     # 本番環境に切り替え
-npm run env:clean    # 環境設定をクリア
+# 環境切り替え
+npm run env:dev
+npm run env:staging
+npm run env:prod
+npm run env:clean
 ```
 
-### 4. コンポーネント設計
+---
 
-#### Server Component と Client Component の使い分け
+## コンポーネント設計
+
+Server Component を基本とし、インタラクティブな要素が必要な場合のみ Client Component を利用する。
 
 ```typescript
 // ✅ Server Component（デフォルト）
-// app/(dashboard)/users/page.tsx
 import { UserList } from "@/features/users/components/UserList";
 
-export default async function UsersPage() {
-  const users = await fetchUsers(); // サーバー側で取得
-  return <UserList users={users} />;
+type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+async function fetchUsers(): Promise<User[]> {
+  const res = await fetch("https://example.com/api/users");
+  return res.json();
 }
 
+export default async function UsersPage() {
+  const users = await fetchUsers();
+  return <UserList users={users} />;
+}
+```
+
+```typescript
 // ✅ Client Component（インタラクティブな場合のみ）
-// features/users/components/UserList.tsx
-("use client");
+"use client";
 
 import { useState } from "react";
+import type { User } from "../types";
 
 interface Props {
   users: User[];
@@ -509,13 +381,12 @@ interface Props {
 export function UserList({ users }: Props) {
   const [filter, setFilter] = useState("");
   // ...
+  return <div>{/* UI 実装 */}</div>;
 }
 ```
 
-#### コンポーネント構成パターン
-
 ```typescript
-// features/users/components/UserCard.tsx
+// 共通的な UI コンポーネントの例
 import type { User } from "../types";
 
 interface UserCardProps {
@@ -535,9 +406,11 @@ export function UserCard({ user, onEdit, className }: UserCardProps) {
 }
 ```
 
-#### 必須拡張機能
+---
 
-VS Code で`Ctrl+P`（Mac: `Cmd+P`）を押し、以下のコマンドを実行してインストールします。
+## VS Code セットアップ
+
+推奨拡張をインストールし、保存時フォーマットと ESLint/Stylelint の自動修正を有効にする。
 
 ```
 ext install esbenp.prettier-vscode
@@ -545,8 +418,10 @@ ext install dbaeumer.vscode-eslint
 ext install stylelint.vscode-stylelint
 ```
 
+`.vscode/settings.json` と `.vscode/extensions.json` で保存時のフォーマット、`source.fixAll`、推奨拡張が設定されています。
+
 ---
 
-**更新履歴**
+## 更新履歴
 
 - v1.2 (2025-01-07): 初版作成（フロントエンド版）
