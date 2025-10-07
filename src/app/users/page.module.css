@@ -20,11 +20,11 @@
   line-height: var(--lh-body);
 }
 
-.back-link-wrapper {
+.backLinkWrapper {
   margin-top: var(--space-200);
 }
 
-.back-link {
+.backLink {
   display: inline-flex;
   align-items: center;
   gap: var(--space-050);
@@ -36,6 +36,6 @@
   transition: background-color 0.2s ease;
 }
 
-.back-link:hover {
+.backLink:hover {
   background-color: var(--palette-neutral-600);
 }

@@ -24,7 +24,7 @@ export function EnvironmentBanner() {
     <div
       className={clsx(
         styles.banner,
-        envInfo.isStaging ? styles["banner-staging"] : styles["banner-dev"]
+        envInfo.isStaging ? styles.bannerStaging : styles.bannerDev
       )}
     >
       🔧 {envInfo.appEnv.toUpperCase()} Environment | API: {envInfo.apiUrl}

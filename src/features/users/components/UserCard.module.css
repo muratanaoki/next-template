@@ -48,17 +48,17 @@
   border-radius: var(--radius-50);
 }
 
-.badge-admin {
+.badgeAdmin {
   background-color: rgb(216 180 254 / 40%);
   color: #6b21a8;
 }
 
-.badge-user {
+.badgeUser {
   background-color: rgb(191 219 254 / 40%);
   color: #1d4ed8;
 }
 
-.edit-button {
+.editButton {
   padding: var(--space-075) var(--space-100);
   font-size: var(--fs-sm);
   background-color: var(--palette-neutral-100);
@@ -67,6 +67,6 @@
   transition: background-color 0.2s ease;
 }
 
-.edit-button:hover {
+.editButton:hover {
   background-color: var(--palette-neutral-200);
 }

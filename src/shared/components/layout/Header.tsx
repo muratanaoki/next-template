@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import styles from "./Header.module.css";
 
 interface HeaderProps {
@@ -7,9 +6,9 @@ interface HeaderProps {
 
 export function Header({ title = "Next.js App" }: HeaderProps) {
   return (
-    <header className={clsx(styles.header)}>
-      <div className={clsx(styles.inner)}>
-        <h1 className={clsx(styles.title)}>{title}</h1>
+    <header className={styles.header}>
+      <div className={styles.inner}>
+        <h1 className={styles.title}>{title}</h1>
       </div>
     </header>
   );

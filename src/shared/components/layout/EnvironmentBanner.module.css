@@ -5,12 +5,12 @@
   text-align: center;
 }
 
-.banner-staging {
+.bannerStaging {
   background-color: rgb(254 243 199 / 90%);
   color: #92400e;
 }
 
-.banner-dev {
+.bannerDev {
   background-color: rgb(191 219 254 / 90%);
   color: #1e3a8a;
 }

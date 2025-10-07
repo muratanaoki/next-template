@@ -1,6 +1,5 @@
 "use client";
 
-import clsx from "clsx";
 import { useState } from "react";
 import type { User } from "../interfaces";
 import { UserCard } from "./UserCard";
@@ -25,24 +24,24 @@ export function UserList({ users }: UserListProps) {
   };
 
   return (
-    <div className={clsx(styles.wrapper)}>
-      <div className={clsx(styles.search)}>
+    <div className={styles.wrapper}>
+      <div className={styles.search}>
         <input
           type="text"
           placeholder="ユーザー名またはメールアドレスで検索..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className={clsx(styles.input)}
+          className={styles.input}
         />
       </div>
 
-      <div className={clsx(styles.list)}>
+      <div className={styles.list}>
         {filteredUsers.length > 0 ? (
           filteredUsers.map((user) => (
             <UserCard key={user.id} user={user} onEdit={handleEditUser} />
           ))
         ) : (
-          <p className={clsx(styles.empty)}>
+          <p className={styles.empty}>
             {filter
               ? "検索条件に一致するユーザーが見つかりません。"
               : "ユーザーが登録されていません。"}

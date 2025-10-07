@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import clsx from "clsx";
 import { EnvironmentBanner } from "@/shared/components/layout/EnvironmentBanner";
 import styles from "./layout.module.css";
 import "./normalize.css";
@@ -17,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={clsx(styles.body)}>
+      <body className={styles.body}>
         <EnvironmentBanner />
         {children}
       </body>

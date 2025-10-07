@@ -14,24 +14,22 @@ interface UserCardProps {
 export function UserCard({ user, onEdit, className = "" }: UserCardProps) {
   return (
     <div className={clsx(styles.card, className)}>
-      <div className={clsx(styles.header)}>
-        <div className={clsx(styles.info)}>
-          <h3 className={clsx(styles.name)}>{user.name}</h3>
-          <p className={clsx(styles.email)}>{user.email}</p>
-          <p className={clsx(styles.meta)}>
+      <div className={styles.header}>
+        <div className={styles.info}>
+          <h3 className={styles.name}>{user.name}</h3>
+          <p className={styles.email}>{user.email}</p>
+          <p className={styles.meta}>
             ステータス: {getUserDisplayStatus(user)}
           </p>
-          <p className={clsx(styles.meta)}>
+          <p className={styles.meta}>
             作成日: {user.createdAt.toLocaleDateString("ja-JP")}
           </p>
         </div>
-        <div className={clsx(styles.actions)}>
+        <div className={styles.actions}>
           <span
             className={clsx(
               styles.badge,
-              user.role === "ADMIN"
-                ? styles["badge-admin"]
-                : styles["badge-user"]
+              user.role === "ADMIN" ? styles.badgeAdmin : styles.badgeUser
             )}
           >
             {user.role}
@@ -39,7 +37,7 @@ export function UserCard({ user, onEdit, className = "" }: UserCardProps) {
           {onEdit && (
             <button
               onClick={() => onEdit(user.id)}
-              className={clsx(styles["edit-button"])}
+              className={styles.editButton}
             >
               編集
             </button>
