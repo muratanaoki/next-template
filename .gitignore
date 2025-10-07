@@ -28,6 +28,9 @@ yarn-error.log*
 .env*.local
 .env
 
+# environment files are tracked for deployment
+# but .env.local is for local overrides only
+
 # vercel
 .vercel
 

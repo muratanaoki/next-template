@@ -16,8 +16,12 @@
 ├─ package.json
 ├─ tsconfig.json
 ├─ next.config.ts
-├─ .env.example            # 環境変数テンプレート
-├─ .env.local              # ローカル環境変数（Git管理外）
+├─ env/                    # 環境変数ファイル群
+│  ├─ .env.development     # 開発環境用設定
+│  ├─ .env.staging         # ステージング環境用設定
+│  ├─ .env.production      # 本番環境用設定
+│  └─ .env.example         # 環境変数テンプレート
+├─ .env.local              # 現在の環境変数（自動生成、Git管理外）
 ├─ .eslintrc.json          # ESLint設定
 ├─ .prettierrc             # Prettier設定
 ├─ .prettierignore         # Prettierフォーマット除外
@@ -414,15 +418,53 @@ import { z } from "zod";
 
 const envSchema = z.object({
   API_URL: z.string().url(),
-  ENVIRONMENT: z.enum(["development", "staging", "production"]),
+  APP_ENV: z.enum(["development", "staging", "production"]),
+  NODE_ENV: z.enum(["development", "production", "test"]),
   ANALYTICS_ID: z.string().optional(),
+  DEBUG_MODE: z.boolean().default(false),
 });
 
 export const env = envSchema.parse({
   API_URL: process.env.NEXT_PUBLIC_API_URL,
-  ENVIRONMENT: process.env.NODE_ENV,
+  APP_ENV: process.env.NEXT_PUBLIC_APP_ENV || process.env.NODE_ENV,
+  NODE_ENV: process.env.NODE_ENV,
   ANALYTICS_ID: process.env.NEXT_PUBLIC_ANALYTICS_ID,
+  DEBUG_MODE: process.env.NEXT_PUBLIC_DEBUG_MODE === "true",
 });
+```
+
+#### 環境別ビルド
+
+```bash
+# 開発環境
+npm run dev                    # 開発サーバー起動
+npm run build                  # 開発環境設定でビルド
+
+# ステージング環境
+npm run dev:staging           # ステージング用開発サーバー
+npm run build:staging         # ステージング環境設定でビルド
+npm run preview:staging       # ステージング環境プレビュー
+
+# 本番環境
+npm run build:production      # 本番環境設定でビルド
+npm run preview:production    # 本番環境プレビュー
+```
+
+**環境ファイル構成**
+
+- `env/.env.development` - 開発環境用設定
+- `env/.env.staging` - ステージング環境用設定
+- `env/.env.production` - 本番環境用設定
+- `env/.env.example` - 環境変数テンプレート
+- `.env.local` - 現在の環境変数（Git管理外、自動生成）
+
+**環境切り替えコマンド**
+
+```bash
+npm run env:dev      # 開発環境に切り替え
+npm run env:staging  # ステージング環境に切り替え
+npm run env:prod     # 本番環境に切り替え
+npm run env:clean    # 環境設定をクリア
 ```
 
 ### 4. コンポーネント設計
@@ -486,6 +528,7 @@ VS Code で`Ctrl+P`（Mac: `Cmd+P`）を押し、以下のコマンドを実行�
 ext install esbenp.prettier-vscode
 ext install dbaeumer.vscode-eslint
 ext install bradlc.vscode-tailwindcss
+ext install stylelint.vscode-stylelint
 ```
 
 ---
