@@ -1,8 +1,10 @@
 "use client";
 
+import clsx from "clsx";
 import { useState } from "react";
 import type { User } from "../interfaces";
 import { UserCard } from "./UserCard";
+import styles from "./UserList.module.css";
 
 interface UserListProps {
   users: User[];
@@ -11,9 +13,10 @@ interface UserListProps {
 export function UserList({ users }: UserListProps) {
   const [filter, setFilter] = useState("");
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(filter.toLowerCase()) ||
-    user.email.toLowerCase().includes(filter.toLowerCase())
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name.toLowerCase().includes(filter.toLowerCase()) ||
+      user.email.toLowerCase().includes(filter.toLowerCase())
   );
 
   const handleEditUser = (id: string) => {
@@ -22,29 +25,27 @@ export function UserList({ users }: UserListProps) {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="mb-6">
+    <div className={clsx(styles.wrapper)}>
+      <div className={clsx(styles.search)}>
         <input
           type="text"
           placeholder="ユーザー名またはメールアドレスで検索..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={clsx(styles.input)}
         />
       </div>
-      
-      <div className="grid gap-4">
+
+      <div className={clsx(styles.list)}>
         {filteredUsers.length > 0 ? (
-          filteredUsers.map(user => (
-            <UserCard
-              key={user.id}
-              user={user}
-              onEdit={handleEditUser}
-            />
+          filteredUsers.map((user) => (
+            <UserCard key={user.id} user={user} onEdit={handleEditUser} />
           ))
         ) : (
-          <p className="text-gray-500 text-center py-8">
-            {filter ? "検索条件に一致するユーザーが見つかりません。" : "ユーザーが登録されていません。"}
+          <p className={clsx(styles.empty)}>
+            {filter
+              ? "検索条件に一致するユーザーが見つかりません。"
+              : "ユーザーが登録されていません。"}
           </p>
         )}
       </div>

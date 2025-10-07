@@ -1,10 +1,12 @@
 "use client";
 
+import clsx from "clsx";
 import { useEffect } from "react";
 import {
   getEnvironmentInfo,
   logEnvironmentInfo,
 } from "@/shared/utils/environment";
+import styles from "./EnvironmentBanner.module.css";
 
 export function EnvironmentBanner() {
   const envInfo = getEnvironmentInfo();
@@ -20,11 +22,10 @@ export function EnvironmentBanner() {
 
   return (
     <div
-      className={`px-4 py-2 text-sm font-medium text-center ${
-        envInfo.isStaging
-          ? "bg-yellow-100 text-yellow-800"
-          : "bg-blue-100 text-blue-800"
-      }`}
+      className={clsx(
+        styles.banner,
+        envInfo.isStaging ? styles["banner-staging"] : styles["banner-dev"]
+      )}
     >
       🔧 {envInfo.appEnv.toUpperCase()} Environment | API: {envInfo.apiUrl}
       {envInfo.debugMode && " | Debug Mode ON"}

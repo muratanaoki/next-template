@@ -527,7 +527,6 @@ VS Code で`Ctrl+P`（Mac: `Cmd+P`）を押し、以下のコマンドを実行�
 ```
 ext install esbenp.prettier-vscode
 ext install dbaeumer.vscode-eslint
-ext install bradlc.vscode-tailwindcss
 ext install stylelint.vscode-stylelint
 ```
 

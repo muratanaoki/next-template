@@ -1,0 +1,15 @@
+.header {
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: var(--space-150);
+}
+
+.inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+}

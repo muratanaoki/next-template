@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import clsx from "clsx";
 import { EnvironmentBanner } from "@/shared/components/layout/EnvironmentBanner";
+import styles from "./layout.module.css";
 import "./normalize.css";
 import "./globals.css";
 
@@ -15,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className="min-h-screen bg-gray-50">
+      <body className={clsx(styles.body)}>
         <EnvironmentBanner />
         {children}
       </body>

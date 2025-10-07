@@ -1,7 +1,9 @@
 "use client";
 
+import clsx from "clsx";
 import type { User } from "../interfaces";
-import { formatUserName, getUserDisplayStatus } from "../functions/formatUserName";
+import { getUserDisplayStatus } from "../functions/formatUserName";
+import styles from "./UserCard.module.css";
 
 interface UserCardProps {
   user: User;
@@ -11,30 +13,33 @@ interface UserCardProps {
 
 export function UserCard({ user, onEdit, className = "" }: UserCardProps) {
   return (
-    <div className={`border rounded-lg p-4 bg-white shadow-sm ${className}`}>
-      <div className="flex justify-between items-start">
-        <div>
-          <h3 className="text-lg font-semibold">{user.name}</h3>
-          <p className="text-gray-600">{user.email}</p>
-          <p className="text-sm text-gray-500">
+    <div className={clsx(styles.card, className)}>
+      <div className={clsx(styles.header)}>
+        <div className={clsx(styles.info)}>
+          <h3 className={clsx(styles.name)}>{user.name}</h3>
+          <p className={clsx(styles.email)}>{user.email}</p>
+          <p className={clsx(styles.meta)}>
             ステータス: {getUserDisplayStatus(user)}
           </p>
-          <p className="text-sm text-gray-500">
+          <p className={clsx(styles.meta)}>
             作成日: {user.createdAt.toLocaleDateString("ja-JP")}
           </p>
         </div>
-        <div className="flex gap-2">
-          <span className={`px-2 py-1 text-xs rounded ${
-            user.role === "ADMIN" 
-              ? "bg-purple-100 text-purple-800" 
-              : "bg-blue-100 text-blue-800"
-          }`}>
+        <div className={clsx(styles.actions)}>
+          <span
+            className={clsx(
+              styles.badge,
+              user.role === "ADMIN"
+                ? styles["badge-admin"]
+                : styles["badge-user"]
+            )}
+          >
             {user.role}
           </span>
           {onEdit && (
-            <button 
+            <button
               onClick={() => onEdit(user.id)}
-              className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded"
+              className={clsx(styles["edit-button"])}
             >
               編集
             </button>

@@ -1,0 +1,16 @@
+.banner {
+  padding: var(--space-100) var(--space-150);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-align: center;
+}
+
+.banner-staging {
+  background-color: rgb(254 243 199 / 90%);
+  color: #92400e;
+}
+
+.banner-dev {
+  background-color: rgb(191 219 254 / 90%);
+  color: #1e3a8a;
+}

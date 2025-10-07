@@ -1,0 +1,72 @@
+.card {
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-100);
+  padding: var(--space-150);
+  background-color: var(--color-surface-elevated);
+  box-shadow: 0 2px 12px rgb(17 18 19 / 4%);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-100);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+}
+
+.name {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.email {
+  color: var(--color-text-secondary);
+}
+
+.meta {
+  font-size: var(--fs-sm);
+  color: var(--color-text-tertiary);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-075);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-050) var(--space-075);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  border-radius: var(--radius-50);
+}
+
+.badge-admin {
+  background-color: rgb(216 180 254 / 40%);
+  color: #6b21a8;
+}
+
+.badge-user {
+  background-color: rgb(191 219 254 / 40%);
+  color: #1d4ed8;
+}
+
+.edit-button {
+  padding: var(--space-075) var(--space-100);
+  font-size: var(--fs-sm);
+  background-color: var(--palette-neutral-100);
+  border-radius: var(--radius-50);
+  border: 1px solid var(--color-border-default);
+  transition: background-color 0.2s ease;
+}
+
+.edit-button:hover {
+  background-color: var(--palette-neutral-200);
+}

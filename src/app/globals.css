@@ -1,3 +1,197 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  /* ===============================================
+     カラーパレット（基礎色定義）
+     =============================================== */
+
+  /* Blue palette (Primary) */
+  --palette-blue-50: #f2f8fd;
+  --palette-blue-100: #e7f1fc;
+  --palette-blue-500: #2196f3;
+  --palette-blue-700: #1976d2;
+
+  /* Red palette (Error/Danger) */
+  --palette-red-500: #f85659;
+
+  /* Green palette (Success) */
+  --palette-green-50: #ecffed;
+  --palette-green-500: #7ed321;
+
+  /* Neutral palette */
+  --palette-neutral-000: #fff;
+  --palette-neutral-050: #fafafa;
+  --palette-neutral-100: #e6eaec;
+  --palette-neutral-200: #c2c9ce;
+  --palette-neutral-300: #9aa2a9;
+  --palette-neutral-400: #7a8289;
+  --palette-neutral-500: #5f676e;
+  --palette-neutral-600: #4d5358;
+  --palette-neutral-700: #3a3f43;
+  --palette-neutral-800: #2a2d30;
+  --palette-neutral-900: #1c1e20;
+
+  /* ===============================================
+     セマンティック色（用途別）
+     =============================================== */
+
+  /* Primary colors */
+  --color-primary: var(--palette-blue-500);
+  --color-primary-hover: var(--palette-blue-700);
+  --color-primary-subtle: var(--palette-blue-50);
+  --color-primary-muted: var(--palette-blue-100);
+
+  /* Surface colors */
+  --color-surface-base: var(--palette-neutral-000);
+  --color-surface-elevated: var(--palette-neutral-050);
+  --color-surface-subtle: var(--palette-neutral-100);
+
+  /* Text colors */
+  --color-text-primary: var(--palette-neutral-900);
+  --color-text-secondary: var(--palette-neutral-700);
+  --color-text-tertiary: var(--palette-neutral-500);
+  --color-text-muted: var(--palette-neutral-400);
+
+  /* Border colors */
+  --color-border-default: var(--palette-neutral-200);
+  --color-border-strong: var(--palette-neutral-300);
+
+  /* State colors */
+  --color-success: var(--palette-green-500);
+  --color-success-subtle: var(--palette-green-50);
+  --color-error: var(--palette-red-500);
+
+  /* ===============================================
+     フォント設定
+     =============================================== */
+
+  --font-family:
+    system-ui, -apple-system, "Segoe UI", roboto, "Helvetica Neue", arial,
+    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-family-heading:
+    system-ui, -apple-system, "Segoe UI", roboto, "Helvetica Neue", arial,
+    sans-serif;
+
+  /* ===============================================
+     タイポグラフィスケール
+     =============================================== */
+
+  /* Fluid base size */
+  --rem: clamp(0.92rem, 0.25vw + 0.86rem, 1rem);
+
+  /* フォントサイズスケール（最小限） */
+  --fs-xs: calc(var(--rem) * 0.75); /* 12px相当: キャプション */
+  --fs-sm: calc(var(--rem) * 0.875); /* 14px相当: 小さめテキスト */
+  --fs-base: var(--rem); /* 16px相当: 基本テキスト */
+  --fs-lg: calc(var(--rem) * 1.125); /* 18px相当: やや大きめ */
+  --fs-xl: calc(var(--rem) * 1.25); /* 20px相当: サブタイトル */
+  --fs-2xl: calc(var(--rem) * 1.5); /* 24px相当: 見出し中 */
+  --fs-3xl: calc(var(--rem) * 2); /* 32px相当: 見出し大 */
+  --fs-4xl: calc(var(--rem) * 2.5); /* 40px相当: ヒーロー */
+
+  /* 行間 */
+  --lh-body: 1.7;
+  --lh-heading: 1.25;
+
+  /* ===============================================
+     スペーシングスケール
+     =============================================== */
+
+  --space-025: calc(var(--rem) * 0.25);
+  --space-050: calc(var(--rem) * 0.5);
+  --space-075: calc(var(--rem) * 0.75);
+  --space-100: calc(var(--rem) * 1);
+  --space-150: calc(var(--rem) * 1.5);
+  --space-200: calc(var(--rem) * 2);
+  --space-250: calc(var(--rem) * 2.5);
+  --space-300: calc(var(--rem) * 3);
+  --space-350: calc(var(--rem) * 3.5);
+  --space-400: calc(var(--rem) * 4);
+  --space-450: calc(var(--rem) * 4.5);
+  --space-500: calc(var(--rem) * 5);
+  --space-550: calc(var(--rem) * 5.5);
+  --space-600: calc(var(--rem) * 6);
+  --space-650: calc(var(--rem) * 6.5);
+  --space-700: calc(var(--rem) * 7);
+
+  /* ===============================================
+     レイアウト設定
+     =============================================== */
+
+  /* 角丸スケール */
+  --radius-125: 0.125rem; /* 2px相当 */
+  --radius-25: 0.25rem; /* 4px相当 */
+  --radius-50: 0.5rem; /* 8px相当 */
+  --radius-100: 1rem; /* 16px相当 */
+
+  /* Border設定 */
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+
+  /* Z-index */
+  --z-header: 10;
+  --z-overlay: 100;
+  --z-dialog: 101;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ===============================================
+   ダークテーマ対応
+   =============================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Surface colors (Dark) */
+    --color-surface-base: var(--palette-neutral-900);
+    --color-surface-elevated: var(--palette-neutral-800);
+    --color-surface-subtle: var(--palette-neutral-700);
+
+    /* Text colors (Dark) */
+    --color-text-primary: var(--palette-neutral-050);
+    --color-text-secondary: var(--palette-neutral-200);
+    --color-text-tertiary: var(--palette-neutral-400);
+    --color-text-muted: var(--palette-neutral-500);
+
+    /* Border colors (Dark) */
+    --color-border-default: var(--palette-neutral-700);
+    --color-border-strong: var(--palette-neutral-600);
+  }
+}
+
+/* ===============================================
+   ベーススタイル
+   =============================================== */
+
+html {
+  font-size: var(--fs-base);
+  height: 100%;
+  font-family: var(--font-family);
+  color: var(--color-text-primary);
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-base);
+  padding: 0;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  line-height: var(--lh-body);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+#root {
+  height: 100%;
+}
