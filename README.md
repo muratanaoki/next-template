@@ -309,15 +309,12 @@ export const env = envSchema.parse({
 - `env/.env.development` — 開発環境用設定
 - `env/.env.staging` — ステージング環境用設定
 - `env/.env.production` — 本番環境用設定
-- `env/.env.example` — 環境変数テンプレート
-- `.env.local` — 現在の環境変数（Git 管理外、自動生成）
 
 ```bash
 # 環境切り替え
 npm run env:dev
 npm run env:staging
 npm run env:prod
-npm run env:clean
 ```
 
 ---
