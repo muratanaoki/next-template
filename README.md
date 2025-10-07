@@ -1,6 +1,6 @@
-# Next.js×Go コーディング規約 v1.2
+# Next.js コーディング規約 v1.2
 
-Next.js と Go を組み合わせたアプリケーションで一貫した品質と開発体験を保つためのフロントエンド規約です。App Router を前提に、ディレクトリ構成・型安全性・環境切り替え・コンポーネント設計までをカバーします。
+Next.jsアプリケーションで一貫した品質と開発体験を保つためのフロントエンド規約です。App Router を前提に、ディレクトリ構成・型安全性・環境切り替え・コンポーネント設計までをカバーします。
 
 ---
 
@@ -21,10 +21,7 @@ Next.js と Go を組み合わせたアプリケーションで一貫した品�
    - [命名規約](#命名規約)
    - [CSS Modules のクラス命名](#css-modules-のクラス命名)
    - [TypeScript 規約](#typescript-規約)
-3. [環境変数とビルド](#環境変数とビルド)
-4. [コンポーネント設計](#コンポーネント設計)
-5. [VS Code セットアップ](#vs-code-セットアップ)
-6. [更新履歴](#更新履歴)
+3. [コンポーネント設計](#コンポーネント設計)
 
 ---
 
@@ -307,23 +304,6 @@ export const env = envSchema.parse({
 });
 ```
 
-### ビルド・プレビューコマンド
-
-```bash
-# 開発環境
-npm run dev
-npm run build
-
-# ステージング環境
-npm run dev:staging
-npm run build:staging
-npm run preview:staging
-
-# 本番環境
-npm run build:production
-npm run preview:production
-```
-
 ### 環境ファイルの配置
 
 - `env/.env.development` — 開発環境用設定
@@ -405,23 +385,3 @@ export function UserCard({ user, onEdit, className }: UserCardProps) {
   );
 }
 ```
-
----
-
-## VS Code セットアップ
-
-推奨拡張をインストールし、保存時フォーマットと ESLint/Stylelint の自動修正を有効にする。
-
-```
-ext install esbenp.prettier-vscode
-ext install dbaeumer.vscode-eslint
-ext install stylelint.vscode-stylelint
-```
-
-`.vscode/settings.json` と `.vscode/extensions.json` で保存時のフォーマット、`source.fixAll`、推奨拡張が設定されています。
-
----
-
-## 更新履歴
-
-- v1.2 (2025-01-07): 初版作成（フロントエンド版）
