@@ -23,7 +23,7 @@
 .input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgb(33 150 243 / 20%);
+  box-shadow: 0 0 0 4px var(--shadow-color-focus-primary);
 }
 
 .list {

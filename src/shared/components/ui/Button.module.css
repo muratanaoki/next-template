@@ -15,12 +15,12 @@
 
 .button:focus-visible {
   outline: 2px solid transparent;
-  box-shadow: 0 0 0 4px rgb(33 150 243 / 25%);
+  box-shadow: 0 0 0 4px var(--shadow-color-focus-primary-strong);
 }
 
 .primary {
   background-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-text-on-primary);
 }
 
 .primary:hover {
@@ -38,11 +38,11 @@
 
 .danger {
   background-color: var(--color-error);
-  color: #fff;
+  color: var(--color-text-on-danger);
 }
 
 .danger:hover {
-  background-color: #d63d40;
+  background-color: var(--color-error-hover);
 }
 
 .disabled {

@@ -7,14 +7,29 @@
   --palette-blue-50: #f2f8fd;
   --palette-blue-100: #e7f1fc;
   --palette-blue-500: #2196f3;
+  --palette-blue-600: #1d4ed8;
   --palette-blue-700: #1976d2;
+  --palette-blue-800: #1e3a8a;
 
   /* Red palette (Error/Danger) */
   --palette-red-500: #f85659;
+  --palette-red-600: #d63d40;
 
   /* Green palette (Success) */
   --palette-green-50: #ecffed;
   --palette-green-500: #7ed321;
+
+  /* Orange palette (Warning) */
+  --palette-orange-50: #fff7ed;
+  --palette-orange-100: #fef3c7;
+  --palette-orange-500: #f59e0b;
+  --palette-orange-700: #92400e;
+
+  /* Purple palette (Accent) */
+  --palette-purple-50: #f3e8ff;
+  --palette-purple-100: #ede9fe;
+  --palette-purple-500: #a855f7;
+  --palette-purple-700: #6b21a8;
 
   /* Neutral palette */
   --palette-neutral-000: #fff;
@@ -29,6 +44,12 @@
   --palette-neutral-800: #2a2d30;
   --palette-neutral-900: #1c1e20;
 
+  /* Shadow palette */
+  --palette-shadow-ambient-strong: rgb(17 18 19 / 8%);
+  --palette-shadow-ambient-subtle: rgb(17 18 19 / 4%);
+  --palette-shadow-focus-primary-strong: rgb(33 150 243 / 25%);
+  --palette-shadow-focus-primary: rgb(33 150 243 / 20%);
+
   /* ===============================================
      セマンティック色（用途別）
      =============================================== */
@@ -38,17 +59,23 @@
   --color-primary-hover: var(--palette-blue-700);
   --color-primary-subtle: var(--palette-blue-50);
   --color-primary-muted: var(--palette-blue-100);
+  --color-text-on-primary: var(--palette-neutral-000);
 
   /* Surface colors */
   --color-surface-base: var(--palette-neutral-000);
   --color-surface-elevated: var(--palette-neutral-050);
   --color-surface-subtle: var(--palette-neutral-100);
+  --color-surface-neutral-strong: var(--palette-neutral-500);
+  --color-surface-neutral-strong-hover: var(--palette-neutral-600);
 
   /* Text colors */
   --color-text-primary: var(--palette-neutral-900);
   --color-text-secondary: var(--palette-neutral-700);
   --color-text-tertiary: var(--palette-neutral-500);
   --color-text-muted: var(--palette-neutral-400);
+  --color-text-inverse: var(--palette-neutral-000);
+  --color-text-on-danger: var(--palette-neutral-000);
+  --color-text-on-neutral-strong: var(--palette-neutral-000);
 
   /* Border colors */
   --color-border-default: var(--palette-neutral-200);
@@ -58,6 +85,23 @@
   --color-success: var(--palette-green-500);
   --color-success-subtle: var(--palette-green-50);
   --color-error: var(--palette-red-500);
+  --color-error-hover: var(--palette-red-600);
+  --color-warning: var(--palette-orange-700);
+  --color-warning-subtle: var(--palette-orange-100);
+  --color-info: var(--palette-blue-800);
+  --color-info-subtle: var(--palette-blue-100);
+  --color-accent-purple: var(--palette-purple-700);
+  --color-accent-purple-subtle: var(--palette-purple-100);
+  --color-accent-blue: var(--palette-blue-600);
+  --color-accent-blue-subtle: var(--palette-blue-50);
+
+  /* Shadow colors */
+  --shadow-color-ambient-strong: var(--palette-shadow-ambient-strong);
+  --shadow-color-ambient-subtle: var(--palette-shadow-ambient-subtle);
+  --shadow-color-focus-primary-strong: var(
+    --palette-shadow-focus-primary-strong
+  );
+  --shadow-color-focus-primary: var(--palette-shadow-focus-primary);
 
   /* ===============================================
      フォント設定

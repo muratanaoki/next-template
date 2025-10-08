@@ -29,13 +29,13 @@
   align-items: center;
   gap: var(--space-050);
   padding: var(--space-100) var(--space-150);
-  background-color: var(--palette-neutral-500);
-  color: #fff;
+  background-color: var(--color-surface-neutral-strong);
+  color: var(--color-text-on-neutral-strong);
   border-radius: var(--radius-50);
   text-decoration: none;
   transition: background-color 0.2s ease;
 }
 
 .backLink:hover {
-  background-color: var(--palette-neutral-600);
+  background-color: var(--color-surface-neutral-strong-hover);
 }

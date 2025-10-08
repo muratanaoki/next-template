@@ -1,6 +1,6 @@
 .header {
   background-color: var(--color-primary);
-  color: #fff;
+  color: var(--color-text-on-primary);
   padding: var(--space-150);
 }
 
